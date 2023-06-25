@@ -1,5 +1,5 @@
 from mlask import MLAsk
-from flask import Flask, render_template, request
+from flask import Flask, redirect, request
 from datetime import datetime
 import json
 
@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return "200 OK"
+    return redirect("/static/index.html")
 
 
 @app.route("/get-time")
@@ -29,7 +29,8 @@ def analysis():
     json_data = request.json
     print(json_data)
     msg = json_data["message"]
-    result = emotion_analyzer.analyze(msg)
+    tmp = emotion_analyzer.analyze(msg)
+    result = json.dumps(tmp, ensure_ascii=False, indent=4)
     return str(result)
 
 

@@ -2,6 +2,7 @@ $(function() {
     const input = $("#input");
     const output = $("#output");
     const sendButton = $("#send-button");
+    const z = $("#zundamon")
 
     input.on("input", function () {
         if (input.val().length === 0) {
@@ -26,9 +27,18 @@ $(function() {
                 "Content-Type": "application/json"
             }
         }).done(function(data) {
+            const json = JSON.parse(data);
+            let representative = json["representative"][0];
+
+            if (representative.length === 0)
+                representative = "None";
+
+            z.attr("src", `img/${representative}.png`);
+
             output.val(data);
         }).fail(function (a, b, c) {
             output.val(`a: ${a},\nb: ${b},\nc: ${c}`);
+            z.attr("src", `img/None.png`);
         });
     });
 });
