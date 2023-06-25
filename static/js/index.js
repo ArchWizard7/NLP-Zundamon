@@ -13,10 +13,11 @@ $(function() {
     });
 
     sendButton.on("click", function () {
-        const message = input.val();
+        let message = input.val();
+        // message = message.replaceAll("\n", ",");
         const array = {message: message};
 
-        console.log(JSON.stringify(array));
+        // console.log(JSON.stringify(array));
 
         $.ajax({
             url: "/analysis",
@@ -28,10 +29,10 @@ $(function() {
             }
         }).done(function(data) {
             const json = JSON.parse(data);
-            let representative = json["representative"][0];
+            let representative = "None";
 
-            if (representative.length === 0)
-                representative = "None";
+            if (json["representative"] !== undefined)
+                representative = json["representative"][0];
 
             z.attr("src", `img/${representative}.png`);
 
